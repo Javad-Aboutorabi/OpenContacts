@@ -99,6 +99,13 @@
 
         <activity android:name=".CardDavSyncActivity" />
         <activity android:name=".activities.PreferencesActivity" />
+
+<!--        providers-->
+        <!--            android:multiProcess="true" should have been used?-->
+        <provider android:name=".provider.ContactsProvider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:authorities="opencontacts.open.com.opencontacts.ContactsProvider"/>
     </application>
 
 </manifest>

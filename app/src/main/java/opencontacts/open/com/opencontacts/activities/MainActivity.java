@@ -102,6 +102,12 @@ public class MainActivity extends AppBaseActivity {
             gotoDefaultTab();
         }
         markPermissionsAksed(this);
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Warning")
+                .setMessage("Do not use this test app, this can leak all your contacts to others apps")
+                .setPositiveButton("I know what I am doing", null)
+                .setCancelable(true)
+                .show();
     }
 
     @Override

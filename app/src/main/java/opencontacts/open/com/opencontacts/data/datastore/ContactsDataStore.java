@@ -30,6 +30,9 @@ public class ContactsDataStore {
     private static List<Contact> contacts = null;
     private static final List<DataStoreChangeListener<Contact>> dataChangeListeners = Collections.synchronizedList(new ArrayList<>(3));
     private static List<Contact> favorites = new ArrayList<>(0);
+    private static boolean initialized = false;
+    private static boolean contactsLoaded = false;
+    private static List<PhoneNumber> phoneNumbers = null;
 
     public static List<Contact> getAllContacts() {
         if (contacts == null) {
@@ -37,6 +40,19 @@ public class ContactsDataStore {
             return new ArrayList<>(0);
         }
         return new ArrayList<>(contacts);
+    }
+
+    public static List<PhoneNumber> cautiouslyGetAllPhoneNumberEntries () {
+        if(phoneNumbers == null) phoneNumbers = PhoneNumber.listAll(PhoneNumber.class);
+        return phoneNumbers;
+    }
+
+    // dont use this method. Always try async means
+    public static List<Contact> cautiouslyGetAllContactsFromDB() {
+        contacts = ContactsDBHelper.getAllContactsFromDB();
+        notifyListenersAsync(REFRESH, null);
+        contactsLoaded = true;
+        return getAllContacts();
     }
 
     public static void addContact(VCard vCard, Context context) {
@@ -130,8 +146,13 @@ public class ContactsDataStore {
         processAsync(ContactsDataStore::refreshStore);
     }
 
+    public static boolean hasContactsLoaded() {
+        return contactsLoaded;
+    }
+
     private static void refreshStore() {
         contacts = ContactsDBHelper.getAllContactsFromDB();
+        contactsLoaded = true;
         notifyListeners(REFRESH, null);
     }
 
@@ -172,7 +193,8 @@ public class ContactsDataStore {
     }
 
     public static void init() {
-        refreshStoreAsync();
+        if (!initialized) refreshStoreAsync();
+        initialized = true;
     }
 
     public static void updateFavoritesList(){
