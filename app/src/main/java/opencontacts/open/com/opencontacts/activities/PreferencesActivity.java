@@ -2,7 +2,9 @@ package opencontacts.open.com.opencontacts.activities;
 
 
 import android.app.Activity;
+import android.app.role.RoleManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,6 +49,7 @@ import static opencontacts.open.com.opencontacts.utils.SharedPreferencesUtils.ge
 public class PreferencesActivity extends AppBaseActivity {
 
     public static final String PREFERENCE_FRAGMENT_TRANSACTION_TAG = "preference";
+    public static final int REQUEST_TO_BECOMING_CALL_SCREENER = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class PreferencesActivity extends AppBaseActivity {
                 .beginTransaction()
                 .add(R.id.fragment_container, new PreferencesFragment(), PREFERENCE_FRAGMENT_TRANSACTION_TAG)
                 .commit();
+        askToBecomeCallScreeningApp();
     }
 
     @Override
@@ -179,5 +183,27 @@ public class PreferencesActivity extends AppBaseActivity {
                     })
                     .show();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TO_BECOMING_CALL_SCREENER) {
+            if (resultCode == android.app.Activity.RESULT_OK) {
+                // toggle on
+            } else {
+                // ignore
+            }
+        }
+    }
+
+    private void askToBecomeCallScreeningApp() {
+        RoleManager roleManager = null;
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q){
+            //showToast that your device wont work here;
+            return;
+        }
+        roleManager = (RoleManager) getSystemService(ROLE_SERVICE);
+        Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING);
+        startActivityForResult(intent, REQUEST_TO_BECOMING_CALL_SCREENER);
     }
 }

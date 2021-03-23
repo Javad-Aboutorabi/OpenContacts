@@ -110,6 +110,12 @@
                 android:resource="@xml/single_contact_dialer_widget_provider_metadata" />
         </receiver>
 
+        <service android:name=".activities.services.CallScreeningServiceImplementation"
+            android:permission="android.permission.BIND_SCREENING_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService"/>
+            </intent-filter>
+        </service>
         <activity android:name=".CardDavSyncActivity" />
         <activity android:name=".activities.PreferencesActivity" />
     </application>

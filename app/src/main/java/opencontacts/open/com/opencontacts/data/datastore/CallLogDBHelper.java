@@ -1,6 +1,7 @@
 package opencontacts.open.com.opencontacts.data.datastore;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -54,13 +55,13 @@ class CallLogDBHelper {
             TelecomManager telecomManager = context.getSystemService(TelecomManager.class);
             if(telecomManager == null || !hasPermission(Manifest.permission.READ_PHONE_STATE, context)) return;
             //added permission check above using util intellij wasn't able to identify it
-            List<PhoneAccountHandle> callCapablePhoneAccounts = telecomManager.getCallCapablePhoneAccounts();
+            @SuppressLint("MissingPermission") List<PhoneAccountHandle> callCapablePhoneAccounts = telecomManager.getCallCapablePhoneAccounts();
             if(callCapablePhoneAccounts.size() < 2) return;
             U.forEachIndexed(callCapablePhoneAccounts, (index, phoneAccount) -> simsInfo.put(phoneAccount.getId(), index + 1));
             return;
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-            List<SubscriptionInfo> activeSubscriptionInfoList = ((SubscriptionManager) context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE)).getActiveSubscriptionInfoList();
+            @SuppressLint("MissingPermission") List<SubscriptionInfo> activeSubscriptionInfoList = ((SubscriptionManager) context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE)).getActiveSubscriptionInfoList();
             if(activeSubscriptionInfoList == null)
                 return;
             for(SubscriptionInfo subscriptionInfo : activeSubscriptionInfoList){
@@ -82,7 +83,6 @@ class CallLogDBHelper {
     }
 
     private List<CallLogEntry> getRecentCallLogEntries(final Context context) throws Exception{ // throwing exception coz anything can happen here while fetching call log from system.
-        if(1==1) throw new Exception("Blah");
         if (ActivityCompat.checkSelfPermission(context, READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(context, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return new ArrayList<>(0);
         }
