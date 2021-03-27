@@ -66,6 +66,13 @@
             android:entryValues="@array/tabs_values"
             android:summary="@string/default_tab_summary"
             />
+        <SwitchPreference
+            android:enabled="false"
+            android:defaultValue="false"
+            android:key="SHOULD_USE_SYSTEM_PHONE_APP"
+            android:summary="@string/should_use_system_app_summary"
+            android:title="@string/should_use_system_app"
+            />
 
     </PreferenceCategory>
     <PreferenceCategory
@@ -74,12 +81,29 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="exportContactsEveryWeek"
-            android:summary="Will export contacts every week"
-            android:title="Auto export contacts" />
+            android:summary="@string/auto_export_contacts_summary"
+            android:title="@string/auto_export_contacts_title" />
 
         <EditTextPreference
             android:key="encryptingContactsExportKey"
-            android:summary="Will encrypt the contacts export using this password"
-            android:title="Encryption password" />
+            android:summary="@string/encrypt_contacts_export_password_summary"
+            android:title="@string/encrypt_contacts_export_password_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="CallFiltering"
+        app:summary="@string/call_filtering_category_summary"
+        android:enabled="false"
+        app:title="@string/call_filtering_category_title">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableCallFiltering"
+            android:summary="@string/call_filtering_enable_call_filtering_summary"
+            android:title="@string/call_filtering_enable_call_filtering_title" />
+
+        <SwitchPreference
+            android:key="rejectCalls"
+            android:summary="@string/call_filtering_reject_calls_summary"
+            android:title="@string/call_filtering_reject_calls_title" />
     </PreferenceCategory>
 </PreferenceScreen>

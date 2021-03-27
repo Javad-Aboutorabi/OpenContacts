@@ -215,6 +215,17 @@
     <string name="chat_link" translatable="false">https://t.me/joinchat/CCdV7RFz8VE24KqFmhBWrg</string>
     <string name="no_app_found_for_action_open_document">Could not find file manager app that can look for documents</string>
     <string name="failed_fetching_recent_calllog">Could not fetch recent call log</string>
+    <string name="auto_export_contacts_title">Auto export contacts</string>
+    <string name="auto_export_contacts_summary">Will export contacts every week</string>
+    <string name="encrypt_contacts_export_password_title">Encryption password</string>
+    <string name="encrypt_contacts_export_password_summary">Will encrypt the contacts export using this password</string>
+    <string name="call_filtering_category_summary">Enabled on Android 10 and above</string>
+    <string name="call_filtering_category_title">Filter calls</string>
+    <string name="call_filtering_enable_call_filtering_title">Enable call filtering</string>
+    <string name="call_filtering_enable_call_filtering_summary">Should block calls</string>
+    <string name="call_filtering_reject_calls_summary">On will reject calls, off will silence calls</string>
+    <string name="call_filtering_reject_calls_title">Block calls behavior</string>
+    <string name="device_not_supported_call_filtering">Your device is not supported for call filtering</string>
     <string-array name="phone_number_types">
         <item>Mobile</item>
         <item>Work</item>

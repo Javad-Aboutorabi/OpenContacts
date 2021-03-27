@@ -10,28 +10,25 @@ import opencontacts.open.com.opencontacts.data.datastore.ContactsDataStore;
 import opencontacts.open.com.opencontacts.orm.Contact;
 
 import static android.telecom.Call.Details.DIRECTION_OUTGOING;
+import static opencontacts.open.com.opencontacts.utils.SharedPreferencesUtils.enableCallFiltering;
+import static opencontacts.open.com.opencontacts.utils.SharedPreferencesUtils.isCallFilteringEnabled;
+import static opencontacts.open.com.opencontacts.utils.SharedPreferencesUtils.shouldBlockCalls;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
+@RequiresApi(api = Build.VERSION_CODES.Q)
 public class CallScreeningServiceImplementation extends CallScreeningService {
-    public static CallResponse getRejectResponse() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return new CallResponse.Builder()
-                    .setDisallowCall(false)
-                    .setRejectCall(false)
-                    .setSilenceCall(true)
-                    .setSkipCallLog(false)
-                    .setSkipNotification(false)
-                    .build();
-        }
-        return new CallResponse.Builder()
-                .setDisallowCall(true)
-                .setRejectCall(true)
-                .setSkipCallLog(false)
-                .setSkipNotification(false)
-                .build();
-    }
+    CallResponse reject = new CallResponse.Builder()
+            .setDisallowCall(true)
+            .setRejectCall(true)
+            .setSkipCallLog(false)
+            .setSkipNotification(false)
+            .build();
 
-    CallResponse reject = getRejectResponse();
+    CallResponse silence = new CallResponse.Builder()
+            .setDisallowCall(false)
+            .setSilenceCall(true)
+            .setSkipCallLog(false)
+            .setSkipNotification(false)
+            .build();
 
     CallResponse allow = new CallResponse.Builder()
             .build();
@@ -39,13 +36,13 @@ public class CallScreeningServiceImplementation extends CallScreeningService {
     @Override
     public void onScreenCall(@NonNull Call.Details callDetails) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return;
-        if (callDetails.getCallDirection() == DIRECTION_OUTGOING) {
+        if (callDetails.getCallDirection() == DIRECTION_OUTGOING || !isCallFilteringEnabled(this)) {
             respondToCall(callDetails, allow);
             return;
         }
         String callingPhonenumber = callDetails.getHandle().getSchemeSpecificPart();
         Contact probableContact = ContactsDataStore.getContact(callingPhonenumber);
-        if (probableContact == null) respondToCall(callDetails, reject);
+        if (probableContact == null) respondToCall(callDetails, shouldBlockCalls(this)? reject : silence);
         else respondToCall(callDetails, allow);
     }
 }
