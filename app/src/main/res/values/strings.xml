@@ -222,11 +222,11 @@
     <string name="call_filtering_category_summary">Enabled on Android 10 and above</string>
     <string name="call_filtering_category_title">Filter calls</string>
     <string name="call_filtering_enable_call_filtering_title">Enable call filtering</string>
-    <string name="call_filtering_enable_call_filtering_summary">Should block calls</string>
+    <string name="call_filtering_enable_call_filtering_summary">Will block unknown calls</string>
     <string name="call_filtering_reject_calls_summary">On will reject calls, off will silence calls</string>
     <string name="call_filtering_reject_calls_title">Block calls behavior</string>
     <string name="device_not_supported_call_filtering">Your device is not supported for call filtering</string>
-    <string name="call_filtering_help_text">Call filtering as of now will mute all the calls that are not present in your contacts. You can also choose to block them and phone will reject them for you</string>
+    <string name="call_filtering_help_text">As of now call filtering will mute all the calls that are not present in your contacts. You can also choose to block them and your phone will reject them for you</string>
     <string-array name="phone_number_types">
         <item>Mobile</item>
         <item>Work</item>
