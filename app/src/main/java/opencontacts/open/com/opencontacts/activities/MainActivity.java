@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,7 @@ import pro.midev.expandedmenulibrary.ExpandedMenuItem;
 import pro.midev.expandedmenulibrary.ExpandedMenuView;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.os.Environment.getExternalStoragePublicDirectory;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
@@ -67,6 +70,7 @@ public class MainActivity extends AppBaseActivity {
     public static final String INTENT_EXTRA_LONG_CONTACT_ID = "contact_id";
     private static final int PREFERENCES_ACTIVITY_RESULT = 773;
     private static final int IMPORT_FILE_CHOOSER_RESULT = 467;
+    private static final int EXPORT_FILE_CHOOSER_RESULT = 7867;
     private ViewPager viewPager;
     private SearchView searchView;
     private CallLogFragment callLogFragment;
@@ -78,6 +82,12 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EXPORT_FILE_CHOOSER_RESULT ){
+            if(resultCode != RESULT_OK) {
+                Toast.makeText(this, "Please select a directory", LENGTH_SHORT).show();
+                return;
+            }
+        }
         if(requestCode == IMPORT_FILE_CHOOSER_RESULT){
             if(data == null) return;
             startActivity(
@@ -143,9 +153,21 @@ public class MainActivity extends AppBaseActivity {
             }, 100);
     }
 
+    public void openDirectory() {
+        // Choose a directory using the system's file picker.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+        // Optionally, specify a URI for the directory that should be opened in
+        // the system file picker when it loads.
+//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, );
+
+        startActivityForResult(intent, EXPORT_FILE_CHOOSER_RESULT);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        openDirectory();
         if(SharedPreferencesUtils.shouldAskForPermissions(this)){
             AndroidUtils.askForPermissionsIfNotGranted(this);
             View startButton = findViewById(R.id.start_button);
