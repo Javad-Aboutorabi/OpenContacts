@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/holo_blue_dark"
-    android:id="@+id/name_of_contact"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:text="Unknown"
-    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-    android:textColor="@android:color/white"
-     />
+    >
+    <TextView
+        android:id="@+id/name_of_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/close"
+        android:layout_toStartOf="@id/close"
+        android:background="@android:color/holo_blue_dark"
+        android:text="Unknown"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@android:color/white" />
+    <ImageView
+        android:id="@+id/close"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/holo_red_light"
+        android:src="@drawable/ic_round_close_24"
+         />
+</RelativeLayout>
