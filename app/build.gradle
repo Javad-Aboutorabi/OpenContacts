@@ -1,9 +1,8 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "opencontacts.open.com.opencontacts"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 22
